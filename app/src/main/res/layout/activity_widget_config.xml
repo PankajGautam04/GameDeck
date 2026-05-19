@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/configure_widget"
+            app:navigationIcon="@drawable/ic_close"
+            app:titleTextAppearance="@style/TextAppearance.Material3.TitleMedium" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingBottom="100dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Appearance Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/label_appearance"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Show Background -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="@string/label_show_bg"
+                            android:textAppearance="?attr/textAppearanceBodyMedium" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_show_bg"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:checked="true" />
+                    </LinearLayout>
+
+                    <!-- Show Title -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="@string/label_show_title"
+                            android:textAppearance="?attr/textAppearanceBodyMedium" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_show_title"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:checked="true" />
+                    </LinearLayout>
+
+                    <!-- Play Button Width (Pad X) -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_play_width"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_play_width"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:valueFrom="10" android:valueTo="80" android:value="36"
+                        android:stepSize="2" />
+
+                    <!-- Play Button Height (Pad Y) -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_play_height"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_play_height"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:valueFrom="4" android:valueTo="30" android:value="10"
+                        android:stepSize="1" />
+
+                    <!-- Play Button Font Weight -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_play_weight"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_play_weight"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:valueFrom="100" android:valueTo="900" android:value="700"
+                        android:stepSize="100" />
+
+
+                    <!-- Card Corner Radius (GAME IMAGES) -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_card_corner"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_card_corner"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:valueFrom="0" android:valueTo="40" android:value="18"
+                        android:stepSize="2" />
+
+                    <!-- Background Corner Radius -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_bg_corner"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_bg_corner"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:valueFrom="0" android:valueTo="40" android:value="24"
+                        android:stepSize="2" />
+
+                    <!-- Blur Intensity -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_blur_radius"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_blur_radius"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:valueFrom="1" android:valueTo="25" android:value="20"
+                        android:stepSize="1" />
+
+                    <!-- Tint Color Presets -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_tint_color"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:layout_marginTop="4dp" />
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chip_group_tint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        app:singleSelection="true"
+                        app:selectionRequired="true">
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_tint_none"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="None" style="@style/Widget.Material3.Chip.Filter" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_tint_dark"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Dark" style="@style/Widget.Material3.Chip.Filter" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_tint_blue"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Blue" style="@style/Widget.Material3.Chip.Filter" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_tint_purple"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Purple" style="@style/Widget.Material3.Chip.Filter" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_tint_teal"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Teal" style="@style/Widget.Material3.Chip.Filter" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_tint_rose"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Rose" style="@style/Widget.Material3.Chip.Filter" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_tint_warm"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Warm" style="@style/Widget.Material3.Chip.Filter" />
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <!-- Tint Opacity -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_tint_alpha"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:layout_marginTop="8dp" />
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_tint_alpha"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:valueFrom="0" android:valueTo="100" android:value="15"
+                        android:stepSize="5" />
+
+                    <!-- Wallpaper -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_pick_wallpaper"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_pick_wallpaper"
+                        android:layout_marginTop="8dp"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        app:icon="@drawable/ic_image" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_remove_wallpaper"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/label_remove_wallpaper"
+                        android:visibility="gone"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        app:icon="@drawable/ic_close" />
+                    <TextView android:id="@+id/tv_wallpaper_status"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/wallpaper_not_set"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Games List -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/label_selected_games"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView android:id="@+id/tv_empty_state"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="@string/empty_games_message"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:gravity="center"
+                        android:padding="24dp"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_selected_games"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never" />
+
+                    <!-- GIF info -->
+                    <LinearLayout android:id="@+id/gif_info_container"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:visibility="gone"
+                        android:layout_marginTop="8dp"
+                        android:padding="12dp"
+                        android:background="@drawable/card_background">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:text="@string/gif_animation_info"
+                            android:textAppearance="?attr/textAppearanceBodySmall"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- FABs -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="@string/save_widget"
+        app:icon="@drawable/ic_arrow_right" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_image"
+        android:contentDescription="@string/add_game"
+        app:fabSize="normal" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

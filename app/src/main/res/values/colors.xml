@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ─── Premium Palette ─── -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary — vivid indigo -->
+    <color name="primary">#FF6366F1</color>
+    <color name="primary_dark">#FF4F46E5</color>
+    <color name="primary_light">#FFA5B4FC</color>
+    <color name="on_primary">#FFFFFFFF</color>
+
+    <!-- Secondary — warm rose -->
+    <color name="secondary">#FFF472B6</color>
+    <color name="on_secondary">#FF1E1E2E</color>
+
+    <!-- Tertiary — teal accent -->
+    <color name="tertiary">#FF2DD4BF</color>
+
+    <!-- Light surfaces -->
+    <color name="surface">#FFF8F9FC</color>
+    <color name="surface_variant">#FFEEF0F6</color>
+    <color name="surface_elevated">#FFFFFFFF</color>
+    <color name="on_surface">#FF0F172A</color>
+    <color name="on_surface_variant">#FF64748B</color>
+
+    <!-- Dark surfaces -->
+    <color name="surface_dark">#FF0F172A</color>
+    <color name="surface_variant_dark">#FF1E293B</color>
+    <color name="surface_elevated_dark">#FF1E293B</color>
+    <color name="on_surface_dark">#FFF1F5F9</color>
+    <color name="on_surface_variant_dark">#FF94A3B8</color>
+
+    <!-- Glass widget -->
+    <color name="widget_glass_light">#40FFFFFF</color>
+    <color name="widget_glass_dark">#3014142B</color>
+    <color name="widget_border_light">#30FFFFFF</color>
+    <color name="widget_border_dark">#18FFFFFF</color>
+
+    <!-- Hero gradient -->
+    <color name="gradient_start">#FF6366F1</color>
+    <color name="gradient_end">#FFA855F7</color>
+</resources>
