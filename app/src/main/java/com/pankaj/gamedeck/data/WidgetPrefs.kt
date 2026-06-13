@@ -36,14 +36,14 @@ object WidgetPrefs {
     fun getShowTitle(c: Context, id: Int) = p(c).getBoolean("title_$id", true)
     fun setShowTitle(c: Context, id: Int, v: Boolean) = p(c).edit().putBoolean("title_$id", v).apply()
 
-    fun getPlayPadX(c: Context, id: Int) = p(c).getInt("play_x_$id", 36)
-    fun setPlayPadX(c: Context, id: Int, v: Int) = p(c).edit().putInt("play_x_$id", v).apply()
+    fun getShowIcon(c: Context, id: Int) = p(c).getBoolean("icon_$id", true)
+    fun setShowIcon(c: Context, id: Int, v: Boolean) = p(c).edit().putBoolean("icon_$id", v).apply()
 
-    fun getPlayPadY(c: Context, id: Int) = p(c).getInt("play_y_$id", 10)
-    fun setPlayPadY(c: Context, id: Int, v: Int) = p(c).edit().putInt("play_y_$id", v).apply()
+    fun getShowStats(c: Context, id: Int) = p(c).getBoolean("stats_$id", true)
+    fun setShowStats(c: Context, id: Int, v: Boolean) = p(c).edit().putBoolean("stats_$id", v).apply()
 
-    fun getPlayWeight(c: Context, id: Int) = p(c).getInt("play_weight_$id", 700) // Default 700 (Bold)
-    fun setPlayWeight(c: Context, id: Int, v: Int) = p(c).edit().putInt("play_weight_$id", v).apply()
+    fun getIconSize(c: Context, id: Int) = p(c).getInt("icon_size_$id", 24)
+    fun setIconSize(c: Context, id: Int, v: Int) = p(c).edit().putInt("icon_size_$id", v).apply()
 
     // ─── Tint ───
     fun getTintColor(c: Context, id: Int) = p(c).getInt("tint_$id", 0x000000) // default: black (alpha controlled separately)

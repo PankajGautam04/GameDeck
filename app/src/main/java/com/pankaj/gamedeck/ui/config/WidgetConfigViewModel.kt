@@ -70,10 +70,15 @@ class WidgetConfigViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun updateGameGif(position: Int, gifPath: String?, gifFrameCount: Int) {
+    fun updateGameGif(position: Int, gifPath: String?, gifFrameCount: Int, animationFps: Int = 24) {
         val current = _selectedGames.value ?: return
         if (position in current.indices) {
-            current[position] = current[position].copy(gifPath = gifPath, isGif = gifPath != null, gifFrameCount = gifFrameCount)
+            current[position] = current[position].copy(
+                gifPath = gifPath,
+                isGif = gifPath != null,
+                gifFrameCount = gifFrameCount,
+                animationFps = animationFps.coerceIn(1, 60)
+            )
             _selectedGames.value = current
         }
     }

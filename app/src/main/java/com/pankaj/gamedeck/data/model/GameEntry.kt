@@ -15,5 +15,6 @@ data class GameEntry(
     val position: Int = 0,
     val isGif: Boolean = false,
     val gifFrameCount: Int = 0,
+    val animationFps: Int = 24,
     val customPlayText: String? = null
 )

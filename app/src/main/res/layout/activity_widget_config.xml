@@ -31,7 +31,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Appearance Card -->
+            <!-- Content Settings Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:padding="16dp">
 
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="@string/label_appearance"
+                        android:text="Widget Content"
                         android:textAppearance="?attr/textAppearanceTitleSmall"
                         android:layout_marginBottom="12dp" />
 
@@ -75,39 +75,62 @@
                             android:checked="true" />
                     </LinearLayout>
 
-                    <!-- Play Button Width (Pad X) -->
+                    <!-- Show Icon -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="@string/label_show_icon"
+                            android:textAppearance="?attr/textAppearanceBodyMedium" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_show_icon"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:checked="true" />
+                    </LinearLayout>
+
+                    <!-- Show Dynamic Stats -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Show Dynamic Stats"
+                            android:textAppearance="?attr/textAppearanceBodyMedium" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_show_stats"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:checked="true" />
+                    </LinearLayout>
+
+                    <!-- Icon Size -->
                     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:text="@string/label_play_width"
+                        android:text="@string/label_icon_size"
                         android:textAppearance="?attr/textAppearanceBodySmall"
                         android:textColor="?attr/colorOnSurfaceVariant" />
                     <com.google.android.material.slider.Slider
-                        android:id="@+id/slider_play_width"
+                        android:id="@+id/slider_icon_size"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:valueFrom="10" android:valueTo="80" android:value="36"
+                        android:valueFrom="16" android:valueTo="64" android:value="24"
                         android:stepSize="2" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Play Button Height (Pad Y) -->
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:text="@string/label_play_height"
-                        android:textAppearance="?attr/textAppearanceBodySmall"
-                        android:textColor="?attr/colorOnSurfaceVariant" />
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/slider_play_height"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:valueFrom="4" android:valueTo="30" android:value="10"
-                        android:stepSize="1" />
+            <!-- Style Settings Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <!-- Play Button Font Weight -->
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:text="@string/label_play_weight"
-                        android:textAppearance="?attr/textAppearanceBodySmall"
-                        android:textColor="?attr/colorOnSurfaceVariant" />
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/slider_play_weight"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:valueFrom="100" android:valueTo="900" android:value="700"
-                        android:stepSize="100" />
-
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Widget Style"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:layout_marginBottom="12dp" />
 
                     <!-- Card Corner Radius (GAME IMAGES) -->
                     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -196,13 +219,32 @@
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:valueFrom="0" android:valueTo="100" android:value="15"
                         android:stepSize="5" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Wallpaper Settings Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Widget Background"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:layout_marginBottom="12dp" />
 
                     <!-- Wallpaper -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_pick_wallpaper"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:text="@string/label_pick_wallpaper"
-                        android:layout_marginTop="8dp"
                         style="@style/Widget.Material3.Button.TonalButton"
                         app:icon="@drawable/ic_image" />
                     <com.google.android.material.button.MaterialButton

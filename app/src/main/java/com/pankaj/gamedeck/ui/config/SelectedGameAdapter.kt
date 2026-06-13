@@ -18,7 +18,7 @@ class SelectedGameAdapter(
     private val onPickCover: (Int) -> Unit,
     private val onPickGif: (Int) -> Unit,
     private val onRemove: (Int) -> Unit,
-    private val onEditPlayText: (Int) -> Unit
+    private val onEditGoal: (Int) -> Unit
 ) : RecyclerView.Adapter<SelectedGameAdapter.ViewHolder>() {
 
     private var games: List<GameEntry> = emptyList()
@@ -41,7 +41,8 @@ class SelectedGameAdapter(
         private val btnRemove: ImageButton = itemView.findViewById(R.id.btn_remove_game)
 
         fun bind(game: GameEntry, position: Int) {
-            tvLabel.text = game.appLabel
+            val customGoal = game.customPlayText
+            tvLabel.text = if (customGoal.isNullOrEmpty()) game.appLabel else "${game.appLabel}\n🏆 Goal: $customGoal"
             tvGifBadge.visibility = if (game.gifPath != null && game.isGif) View.VISIBLE else View.GONE
 
             if (game.imagePath != null && File(game.imagePath).exists()) {
@@ -60,13 +61,11 @@ class SelectedGameAdapter(
                 }
             }
 
-            val customText = game.customPlayText ?: "PLAY"
-            tvLabel.text = "${game.appLabel}\nButton: $customText"
 
             btnPickCover.setOnClickListener { onPickCover(position) }
             btnPickGif.setOnClickListener { onPickGif(position) }
             btnRemove.setOnClickListener { onRemove(position) }
-            itemView.setOnClickListener { onEditPlayText(position) }
+            itemView.setOnClickListener { onEditGoal(position) }
         }
     }
 }

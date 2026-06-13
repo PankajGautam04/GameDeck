@@ -24,9 +24,8 @@
     <string name="label_appearance">Appearance</string>
     <string name="label_show_bg">Show Background (Glass)</string>
     <string name="label_show_title">Show Game Title</string>
-    <string name="label_play_width">Play Button Width</string>
-    <string name="label_play_height">Play Button Height</string>
-    <string name="label_play_weight">Play Button Font Weight</string>
+    <string name="label_show_icon">Show Game Icon</string>
+    <string name="label_icon_size">Game Icon Size</string>
     <string name="label_hide_bottom">Hide Bottom Cards</string>
     <string name="label_card_corner">Card Corner Roundness</string>
     <string name="label_bg_corner">Background Corner Roundness</string>
@@ -49,6 +48,9 @@
     <string name="gif_badge">GIF</string>
     <string name="gif_animation_info">🎬 GIF covers animate on screen unlock (5s burst at 24fps)</string>
     <string name="gif_extracted">Extracted %d frames</string>
+    <string name="lock_monitor_channel_name">GameDeck unlock monitor</string>
+    <string name="lock_monitor_notification_title">GameDeck widget active</string>
+    <string name="lock_monitor_notification_text">Listening for unlock to animate GIF covers</string>
 
     <!-- Main Activity -->
     <string name="app_subtitle">Your game launcher widget</string>

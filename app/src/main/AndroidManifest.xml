@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
@@ -38,13 +42,19 @@
             android:exported="false"
             android:theme="@style/Theme.GameDeck" />
 
+        <service
+            android:name=".widget.LockUnlockMonitorService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
         <!-- Widget provider with GIF animation triggers -->
         <receiver
             android:name=".widget.GameDeckWidgetProvider"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <!-- GIF animation trigger: screen unlock -->
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
             <meta-data

@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -31,6 +32,10 @@ import java.io.File
 import java.io.FileOutputStream
 
 class WidgetConfigActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "WidgetConfig"
+    }
 
     private lateinit var viewModel: WidgetConfigViewModel
     private lateinit var selectedAdapter: SelectedGameAdapter
@@ -107,6 +112,17 @@ class WidgetConfigActivity : AppCompatActivity() {
         setupRecyclerView()
         setupFabs()
         observeViewModel()
+
+        if (!com.pankaj.gamedeck.data.UsageStatsHelper.hasUsageStatsPermission(this)) {
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Playtime Permission")
+                .setMessage("To display your game playtime on the widget, GameDeck needs Usage Access. Would you like to grant it now?")
+                .setPositiveButton("Grant") { _, _ ->
+                    com.pankaj.gamedeck.data.UsageStatsHelper.requestUsageStatsPermission(this)
+                }
+                .setNegativeButton("Skip", null)
+                .show()
+        }
     }
 
     private fun setupToolbar() {
@@ -127,9 +143,14 @@ class WidgetConfigActivity : AppCompatActivity() {
         findViewById<Slider>(R.id.slider_bg_corner).value = WidgetPrefs.getBgCornerRadius(this, appWidgetId).toFloat()
         findViewById<Slider>(R.id.slider_blur_radius).value = WidgetPrefs.getBlurRadius(this, appWidgetId).toFloat()
         findViewById<Slider>(R.id.slider_tint_alpha).value = WidgetPrefs.getTintAlpha(this, appWidgetId).toFloat()
-        findViewById<Slider>(R.id.slider_play_width).value = WidgetPrefs.getPlayPadX(this, appWidgetId).toFloat()
-        findViewById<Slider>(R.id.slider_play_height).value = WidgetPrefs.getPlayPadY(this, appWidgetId).toFloat()
-        findViewById<Slider>(R.id.slider_play_weight).value = WidgetPrefs.getPlayWeight(this, appWidgetId).toFloat()
+        
+        val iconSwitch = findViewById<MaterialSwitch>(R.id.switch_show_icon)
+        iconSwitch.isChecked = WidgetPrefs.getShowIcon(this, appWidgetId)
+        
+        val statsSwitch = findViewById<MaterialSwitch>(R.id.switch_show_stats)
+        statsSwitch.isChecked = WidgetPrefs.getShowStats(this, appWidgetId)
+        
+        findViewById<Slider>(R.id.slider_icon_size).value = WidgetPrefs.getIconSize(this, appWidgetId).toFloat()
 
         // Wallpaper buttons
         findViewById<View>(R.id.btn_pick_wallpaper).setOnClickListener {
@@ -185,7 +206,7 @@ class WidgetConfigActivity : AppCompatActivity() {
             onPickCover = { pos -> pendingImagePosition = pos; isPickingWallpaper = false; isPickingGifSlot = false; requestImagePermission() },
             onPickGif = { pos -> pendingImagePosition = pos; isPickingWallpaper = false; isPickingGifSlot = true; requestImagePermission() },
             onRemove = { pos -> viewModel.removeGame(pos) },
-            onEditPlayText = { pos -> showEditPlayTextDialog(pos) }
+            onEditGoal = { pos -> showEditGoalDialog(pos) }
         )
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = selectedAdapter
@@ -205,32 +226,35 @@ class WidgetConfigActivity : AppCompatActivity() {
         findViewById<View>(R.id.fab_save).setOnClickListener { saveAndFinish() }
     }
 
-    private fun showEditPlayTextDialog(position: Int) {
+    private fun showEditGoalDialog(position: Int) {
         val games = viewModel.selectedGames.value ?: return
         if (position !in games.indices) return
         val game = games[position]
-        val currentText = game.customPlayText ?: "PLAY"
+        val currentGoal = game.customPlayText ?: ""
 
         val input = android.widget.EditText(this).apply {
-            setText(currentText)
-            setSelection(currentText.length)
+            setText(currentGoal)
+            setSelection(currentGoal.length)
+            hint = "e.g. Defeat the final boss"
         }
         val padding = (16 * resources.displayMetrics.density).toInt()
         val container = android.widget.FrameLayout(this).apply {
-            setPadding(padding, 0, padding, 0)
+            setPadding(padding, padding, padding, padding)
             addView(input)
         }
 
         com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.label_play_width).replace("Width", "Text")) // Quick hack for title
+            .setTitle("Set Current Goal / Status")
             .setView(container)
             .setPositiveButton(android.R.string.ok) { _, _ ->
-                val newText = input.text.toString().trim()
-                viewModel.updateCustomPlayText(position, if (newText.isEmpty()) null else newText)
+                val newGoal = input.text.toString().trim()
+                viewModel.updateCustomPlayText(position, if (newGoal.isEmpty()) null else newGoal)
             }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
     }
+
+
 
     private fun observeViewModel() {
         val rv = findViewById<RecyclerView>(R.id.rv_selected_games)
@@ -246,6 +270,10 @@ class WidgetConfigActivity : AppCompatActivity() {
     }
 
     private fun requestImagePermission() {
+        if (isPickingGifSlot) {
+            launchImagePicker()
+            return
+        }
         val perm = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             android.Manifest.permission.READ_MEDIA_IMAGES else android.Manifest.permission.READ_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED) launchImagePicker()
@@ -253,7 +281,18 @@ class WidgetConfigActivity : AppCompatActivity() {
     }
 
     private fun launchImagePicker() {
-        imagePickerLauncher.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply { type = "image/*" })
+        val intent = if (isPickingGifSlot) {
+            Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "*/*"
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/gif", "video/*"))
+            }
+        } else {
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
+                type = "image/*"
+            }
+        }
+        imagePickerLauncher.launch(intent)
     }
 
     /** After picking wallpaper, launch built-in crop activity (not system crop intent). */
@@ -271,30 +310,70 @@ class WidgetConfigActivity : AppCompatActivity() {
 
     private fun handleImagePicked(uri: Uri) {
         val mime = contentResolver.getType(uri)
-        val isGif = mime == "image/gif"
-        val ext = if (isGif) "gif" else "jpg"
+        val looksLikeGif = mime?.equals("image/gif", ignoreCase = true) == true ||
+            uri.toString().substringBefore('?').endsWith(".gif", ignoreCase = true)
+        val looksLikeVideo = mime?.startsWith("video/", ignoreCase = true) == true
+        val ext = when {
+            looksLikeGif -> "gif"
+            looksLikeVideo -> "mp4"
+            isPickingGifSlot -> "anim"
+            else -> "jpg"
+        }
         val path = copyToInternal(uri, "cover_${appWidgetId}_${System.currentTimeMillis()}.$ext") ?: return
+        val isGif = looksLikeGif || isGifFile(path)
+        val isVideo = looksLikeVideo || isVideoFile(path)
+        Log.d(TAG, "Picked image slot=$pendingImagePosition gifSlot=$isPickingGifSlot mime=$mime isGif=$isGif isVideo=$isVideo path=$path")
 
         if (isPickingGifSlot) {
-            if (isGif) {
+            val targetPosition = pendingImagePosition
+            if (isGif || isVideo) {
                 val frameKey = File(path).nameWithoutExtension
                 Thread {
-                    val result = GifProcessor(this).extractFrames(uri, frameKey)
+                    val processor = GifProcessor(this)
+                    val result = if (isVideo) {
+                        processor.extractVideoFrames(path, frameKey)
+                    } else {
+                        processor.extractFrames(uri, frameKey)
+                    }
                     runOnUiThread {
+                        Log.d(TAG, "Animation extraction result slot=$targetPosition frameKey=$frameKey frames=${result?.frameCount ?: 0} fps=${result?.fps ?: 0}")
                         if (result != null && result.frameCount > 0) {
-                            viewModel.updateGameGif(pendingImagePosition, path, result.frameCount)
+                            viewModel.updateGameGif(targetPosition, path, result.frameCount, result.fps)
                             Toast.makeText(this, getString(R.string.gif_extracted, result.frameCount), Toast.LENGTH_SHORT).show()
                         } else {
-                            viewModel.updateGameGif(pendingImagePosition, null, 0)
+                            viewModel.updateGameGif(targetPosition, null, 0)
                         }
                     }
                 }.start()
             } else {
-                Toast.makeText(this, "Please select a valid GIF file.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please select a valid GIF or video file.", Toast.LENGTH_SHORT).show()
             }
         } else {
             // Picking cover slot
             viewModel.updateGameImage(pendingImagePosition, path)
+        }
+    }
+
+    private fun isGifFile(path: String): Boolean {
+        return try {
+            File(path).inputStream().use { input ->
+                val header = ByteArray(6)
+                input.read(header) == header.size && String(header, Charsets.US_ASCII).startsWith("GIF")
+            }
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    private fun isVideoFile(path: String): Boolean {
+        val retriever = android.media.MediaMetadataRetriever()
+        return try {
+            retriever.setDataSource(path)
+            retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION) != null
+        } catch (_: Exception) {
+            false
+        } finally {
+            try { retriever.release() } catch (_: Exception) {}
         }
     }
 
@@ -315,16 +394,15 @@ class WidgetConfigActivity : AppCompatActivity() {
         }
 
         // Save all prefs
-        // Save all prefs
         WidgetPrefs.setShowBackground(this, appWidgetId, findViewById<MaterialSwitch>(R.id.switch_show_bg).isChecked)
         WidgetPrefs.setShowTitle(this, appWidgetId, findViewById<MaterialSwitch>(R.id.switch_show_title).isChecked)
         WidgetPrefs.setCardCornerRadius(this, appWidgetId, findViewById<Slider>(R.id.slider_card_corner).value.toInt())
         WidgetPrefs.setBgCornerRadius(this, appWidgetId, findViewById<Slider>(R.id.slider_bg_corner).value.toInt())
         WidgetPrefs.setBlurRadius(this, appWidgetId, findViewById<Slider>(R.id.slider_blur_radius).value.toInt())
         WidgetPrefs.setTintAlpha(this, appWidgetId, findViewById<Slider>(R.id.slider_tint_alpha).value.toInt())
-        WidgetPrefs.setPlayPadX(this, appWidgetId, findViewById<Slider>(R.id.slider_play_width).value.toInt())
-        WidgetPrefs.setPlayPadY(this, appWidgetId, findViewById<Slider>(R.id.slider_play_height).value.toInt())
-        WidgetPrefs.setPlayWeight(this, appWidgetId, findViewById<Slider>(R.id.slider_play_weight).value.toInt())
+        WidgetPrefs.setShowIcon(this, appWidgetId, findViewById<MaterialSwitch>(R.id.switch_show_icon).isChecked)
+        WidgetPrefs.setShowStats(this, appWidgetId, findViewById<MaterialSwitch>(R.id.switch_show_stats).isChecked)
+        WidgetPrefs.setIconSize(this, appWidgetId, findViewById<Slider>(R.id.slider_icon_size).value.toInt())
 
         viewModel.saveConfig(appWidgetId) {
             val mgr = AppWidgetManager.getInstance(this)

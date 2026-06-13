@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.fragment.ktx)
+    implementation("androidx.palette:palette-ktx:1.0.0")
 
     // Room
     implementation(libs.androidx.room.runtime)
@@ -57,6 +58,9 @@ dependencies {
     // Glide
     implementation(libs.glide)
     kapt(libs.glide.compiler)
+
+    // Native C++ reliable GIF Decoder (bypasses Glide's buggy decoder, much lighter than FFmpeg)
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
 
     // Lifecycle
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
